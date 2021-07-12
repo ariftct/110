@@ -1,0 +1,65 @@
+/* Space out content a bit */
+body {
+	padding-top: 1.5rem;
+	padding-bottom: 1.5rem;
+}
+
+/* Customize container */
+@media (min-width: 48em) {
+	.container {
+		max-width: 46rem;
+	}
+}
+
+/* Navbar item with linebreak to split icon/text if not enough horizontal space */
+nav#payload-type > a > span:after {
+	content:"\A";
+	white-space: pre;
+}
+/* Navbar item with space to split icon/text */
+@media (min-width: 576px) {
+	nav#payload-type > a > span:after {
+		content:" ";
+		white-space: pre;
+	}
+}
+
+/* Tweak the active state of nav bar items (transparent) */
+nav > a.nav-item.nav-link.active {
+	background-color: #f8f9fa;
+	border-bottom-color: #f8f9fa;
+}
+
+/* Material icons sizes */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-20 { font-size: 20px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Prevent alert container to use margin when empty */
+#alert-container:empty {
+	display: none;
+}
+
+/* Remove bottom margin on alerts */
+#alert-container > div.alert > pre[data-placeholder] {
+	margin-bottom: 0;
+}
+
+/* Remove bottom margin on last form item */
+div#forms > div[role=tabpanel] > div.form-group.row:last-child {
+	margin-bottom: 0;
+}
+
+/* Replace default active (blue) background color with neutral gray */
+.dropdown-item.active, .dropdown-item:active {
+	background-color: rgba(0,0,0,.2);
+
+}
+.tokenform
+{
+	width:25%;
+	background-color:gray;
+	color:white
+}
