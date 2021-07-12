@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#FF9800">
+
+  <title>Clock</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link href="favicon.png" rel="icon" type="image/x-icon" />
+  <link rel="icon" sizes="192x192" href="192.png">
+  <script defer src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/7.1.0/firebase-database.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+  <script defer src="fcm-toolbox.js"></script>
+  <link rel="stylesheet" href="fcm-toolbox.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body onload="startTime()">
+
+  <div class="container">
+
+    <!-- Card -->
+    <div class="card bg-light shadow">
+
+      <!-- navbar -->
+      <div class="card-header">
+          <span class="navbar-brand text-muted ml-3">Ping test</span> <span id="blink" ><span class="float-right" id="clk"></span> </span>
+		  
+        </nav>
+      </div>
+      <!-- navbar -->
+
+      <div class="card-header" role="tablist">
+        <nav id="payload-type" class="nav nav-tabs card-header-tabs nav-fill">
+          <a class="text-secondary nav-item nav-link" data-toggle="tab" data-value="ping" href="#send-ping" role="tab"><i class="material-icons align-middle">notifications_none</i><span></span>Ping</a>
+          <a class="text-secondary nav-item nav-link" data-toggle="tab" data-value="text" href="#send-text" role="tab"><i class="material-icons align-middle">message</i><span></span>Text</a>
+          
+        </nav>
+      </div>
+
+      <div id="forms" class="tab-content">
+
+        <!-- Loading -->
+        <div class="card-body tab-pane show active" id="loading" role="tabpanel">
+          <div class="d-flex justify-content-center">
+            <div class="spinner-grow text-secondary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <!-- Loading -->
+
+        <!-- Ping -->
+        <div class="card-body tab-pane fade show" id="send-ping" role="tabpanel">
+          <p class="card-text">Testing</p>
+        </div>
+        <!-- Ping -->
+
+        <!-- Text -->
+        <div class="card-body tab-pane fade" id="send-text" role="tabpanel">
+          <div class="form-group row">
+            <div class="col-sm-12">
+			<form id="myForm">
+			 <input type="button" onclick="myFunction()" value="Clear-All" class="float-right">
+              <input class="form-control" type="text" value="" id="send-text-title" placeholder="Title">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <div class="input-group">
+			  
+			 
+                <textarea class="form-control" type="text" value="" id="send-text-message" rows="5" cols="50"placeholder="Message"></textarea>
+				</form>
+				<script>
+function myFunction() {
+  document.getElementById("myForm").reset();
+}
+</script>
+                <div class="input-group-append">
+              
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Text -->
+
+
+        <!-- Link -->
+        <div class="card-body tab-pane fade" id="send-link" role="tabpanel">
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <input class="form-control" type="text" value="" id="send-link-title" placeholder="Title">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <input class="form-control" type="url" value="" id="send-link-url" placeholder="https://www.google.com">
+            </div>
+          </div>
+        </div>
+        <!-- Link -->
+
+
+        <!-- App -->
+        <div class="card-body tab-pane fade" id="send-app" role="tabpanel">
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <input class="form-control" type="text" value="" id="send-app-title" placeholder="Title">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <input class="form-control" type="text" value="" id="send-app-package" placeholder="com.android.example">
+            </div>
+          </div>
+        </div>
+        <!-- App -->
+
+        <!-- Raw -->
+        <div class="card-body tab-pane fade" id="send-raw" role="tabpanel">
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <textarea class="form-control" rows="3" id="send-raw-data"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Raw -->
+
+      </div>
+
+      <!-- Footer -->
+      <div class="card-footer text-muted ">
+
+        <div class="form-group row">
+          <div class="col-sm-12 float-right">
+            <div class="input-group float-right">
+              <input class="tokenform" style="text-overflow: ellipsis;"  type="button" value="" id="form-device-token" placeholder="Token or topic…" aria-label="Token">
+			   <h5>◄select►</h5>
+              <div class="input-group-append">
+                <label id="btn-device-token-alias" class="input-group-text"></label>
+                <div class="dropdown-menu float-right col-sm-4 notification">
+                  <h6 id="list-device-empty" class="dropdown-header">No device available</h6>
+                  <div id="list-device-tokens">
+                  </div>
+                  <div id="list-device-users">
+                  </div>
+                </div>
+                <button id="btn-add-device-token" type="button" class="btn btn-outline-secondary py-1 border-right-0" title="Add"><i class="material-icons align-middle">add</i></button>
+                <button id="btn-device-dropdown" type="button" class="btn btn-outline-secondary py-1 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Search"><i class="material-icons align-middle md-24">search</i> </button>
+              </div>
+            </div>
+          </div>
+        </div>
+		<br>
+
+        <div class="btn-group float-none col-sm" role="group">
+        <button id="btn-visibility" type="button" class="btn btn-sm btn-outline-primary" title="Notification"><i id="btn-visibility-icon" class="material-icons align-center md-20">notifications_off</i></button>
+          <button id="btn-send" type="button" class="btn btn-lg btn-outline-primary"><b>Send</b></button>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div id="alert-container" class="mt-3"></div>
+
+      </div>
+      <!-- Footer -->
+
+    </div>
+    <!-- Card -->
+
+    <!-- Dialog settings -->
+    <div class="modal fade" id="settings-modal" tabindex="-1" role="dialog" aria-labelledby="settings-modal-label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="settings-modal-label">Settings</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <h5>Firebase Cloud Messaging <small class="text-muted">(Required)</small></h5>
+              <p></p>
+              <div class="form-group row">
+                <label for="settings-fcm-api-key" class="col-sm-3 col-form-label">API Key</label>
+                <div class="col-sm-9">
+                  <input class="form-control" type="text" value="" id="settings-fcm-api-key" required>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="settings-fcm-ttl" class="col-sm-3 col-form-label">Ttl</label>
+                <div class="col-sm-9">
+                  <input class="form-control" type="number" value="" id="settings-fcm-ttl">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="settings-fcm-priority" class="col-sm-3 col-form-label">Priority</label>
+                <div class="col-sm-9">
+                  <select class="form-control" id="settings-fcm-priority">
+                    <option value="high">High</option>
+                    <option value="normal">Normal</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr>
+
+              <h5>Firebase Realtime Database <small class="text-muted">(Optional)</small></h5>
+              <p></p>
+              <div class="form-group row">
+                <label for="settings-frd-database-url" class="col-sm-3 col-form-label">Url</label>
+                <div class="col-sm-9">
+                  <input class="form-control" type="text" value="" id="settings-frd-database-url" required>
+                  <small class="form-text text-muted">Modification requires a page reload</small>
+                </div>
+              </div>
+
+              <hr>
+
+              <h5>Firebase Analytics <small class="text-muted">(Optional)</small>
+                <div class="custom-control custom-switch float-right">
+                  <input type="checkbox" class="custom-control-input" id="settings-fa-switch">
+                  <label class="custom-control-label" for="settings-fa-switch"></label>
+                </div>
+              </h5>
+              <small class="form-text text-muted">Modification requires a page reload</small>
+              <p></p>
+              <div id="settings-fa">
+                <div class="form-group row">
+                  <label for="settings-fa-api-key" class="col-sm-3 col-form-label">API Key</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" type="text" value="" id="settings-fa-api-key" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="settings-fa-project-id" class="col-sm-3 col-form-label">Project ID</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" type="text" value="" id="settings-fa-project-id" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="settings-fa-app-id" class="col-sm-3 col-form-label">App ID</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" type="text" value="" id="settings-fa-app-id" required>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="settings-fa-measurement-id" class="col-sm-3 col-form-label">Meas. ID</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" type="text" value="" id="settings-fa-measurement-id" required>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary mr-auto" id="pwa" hidden>Install</button>
+            <button type="button" class="btn btn-danger" id="btn-reset">Reset</button>
+            <button type="button" class="btn btn-secondary" onclick="location.reload();">Reload</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dialog settings -->
+
+    <!-- Dialog tutorial -->
+    <div class="modal fade" id="tutorialModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Tutorial</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h6>How to send send payloads?</h6>
+            <ol>
+              <li>Select a <strong>type</strong> of payload to send</li>
+              <li>Fill the corresponding <strong>input fields</strong></li>
+              <li>Enter an device <strong>token</strong> or a <strong>topic</strong></li>
+              <li>Click the <button type="button" class="btn btn-sm btn-outline-primary"><b>Send</b></button> button or
+                <kbd>Ctrl</kbd> + <kbd>&#9166;</kbd></li>
+            </ol>
+          </div>
+          <div class="modal-body">
+            <h6>How to add device tokens?</h6>
+            <ol>
+              <li>Fill the <strong>token</strong> input field</li>
+              <li>Click the <button type="button" class="btn btn-secondary btn-sm"><i class="material-icons align-middle md-18">add</i></button> button</li>
+            </ol>
+            Or
+            <ol>
+              <li><strong>Download</strong> and <strong>launch</strong> the corresponding app on your device</li>
+              <li>Open the device dropdown with <button type="button" class="btn btn-secondary btn-sm dropdown-toggle"><i class="material-icons align-middle md-18">search</i></button></li>
+              <li>Click the <button type="button" class="btn btn-secondary btn-sm"><i class="material-icons align-middle md-18">add</i></button> button next to the corresponding device
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dialog tutorial -->
+
+  </div> <!-- /container -->
+  
+
+
+<script>
+
+document.getElementById("clk").innerHTML = formatAMPM();
+
+function formatAMPM() {
+var d = new Date(),
+    minutes = d.getMinutes().toString().length == 1 ? '0'+d.getMinutes() : d.getMinutes(),
+    hours = d.getHours().toString().length == 1 ? '0'+d.getHours() : d.getHours(),
+    ampm = d.getHours() >= 12 ? 'pm' : 'am',
+    months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], 
+    days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+return days[d.getDay()]+' - '+d.getDate()+'/'+months[d.getMonth()]+'  '+hours+':'+minutes;
+}
+
+
+
+
+
+        var blink = document.getElementById('blink');
+        setInterval(function() {
+            blink.style.opacity = (blink.style.opacity == 0.3 ? 0.7 : 0.3);
+        }, 800);
+  
+</script>
+
+</body>
+
+</html>
