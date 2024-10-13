@@ -4,7 +4,7 @@ var DEFAULT_APP_SETTINGS = {
   fcm: {
     apiKey: "AAAASwElybY:APA91bFaTT_zKLcLYqB0soW8PJmFFG7x1F3wiR0MGta9lLsU22uAVa0VD_3zzz-OremJKDEWEf52OD554byamcwAmZldgrQKfwAjjbhZz_5DYT-z1gcflUBFSWVQQ9lSE9KwDBNHULvfVKmQwxa7xNwuPHz-VfdTbw",
     ttl: 60,
-    priority: high
+    priority: 1
   },
   frd: {
     databaseUrl: "https://pushnotification-35a96-default-rtdb.firebaseio.com"
