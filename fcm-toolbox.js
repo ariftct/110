@@ -1,7 +1,7 @@
 "use strict";
 
 var DEFAULT_APP_SETTINGS = {
-  apiKey: "AIzaSyBBd-gJUlg_HFdbWz6l90gJL2tHEm4itqY",
+  apiKey: "AAAASwElybY:APA91bFaTT_zKLcLYqB0soW8PJmFFG7x1F3wiR0MGta9lLsU22uAVa0VD_3zzz-OremJKDEWEf52OD554byamcwAmZldgrQKfwAjjbhZz_5DYT-z1gcflUBFSWVQQ9lSE9KwDBNHULvfVKmQwxa7xNwuPHz-VfdTbw",
   projectId: "fir-cloudmessaging-4e2cd",
   appId: "1:322141800886:web:5cdb37ecedcc8c359d5917",
   fcm: {
@@ -10,7 +10,7 @@ var DEFAULT_APP_SETTINGS = {
   },
   frd: {
     active: true,
-    databaseUrl: "https://fir-cloudmessaging-4e2cd.firebaseio.com"
+    databaseUrl: "https://pushnotification-35a96-default-rtdb.firebaseio.com"
   },
   fa: {
     active: true,
