@@ -55,11 +55,4 @@ div#forms > div[role=tabpanel] > div.form-group.row:last-child {
 /* Replace default active (blue) background color with neutral gray */
 .dropdown-item.active, .dropdown-item:active {
 	background-color: rgba(0,0,0,.2);
-
-}
-.tokenform
-{
-	width:25%;
-	background-color:gray;
-	color:white
 }
